@@ -9,27 +9,14 @@ import UIKit
 
 class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    let numberToGuess = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    let numberBank = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     
-    let lettersToGuess = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+    let letterBank = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
                           "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
                           "u", "v", "w", "x", "y", "z"]
     
-    // picker data source
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        8
-    }
+    let correctKey = "abcdefgh"
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        lettersToGuess.count
-    }
-    
-    // picker delegate
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-
-        return lettersToGuess[row]
-    }
-
     var timer = Timer()
     
     static let MAX_TIME_IN_MILLISECONDS = 30000
@@ -40,6 +27,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBOutlet weak var timerDisplay: UILabel!
     
+    @IBOutlet weak var cipherPicker: UIPickerView!
     
     @IBAction func timerStart(_ sender: Any) {
         if(!timerIsRunning) {
@@ -50,7 +38,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBAction func timerStop(_ sender: Any) {
         if(timerIsRunning) {
-            stopTimer()
+            timer.invalidate()
             timerIsRunning = false
         }
     }
@@ -61,7 +49,45 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         }
         timeInMilliSeconds = ViewController.MAX_TIME_IN_MILLISECONDS
         timerDisplay.text = formatTimeString(time: TimeInterval(timeInMilliSeconds))
+        if(self.timerDisplay.textColor == UIColor.red) {
+            self.timerDisplay.textColor = UIColor.black
+        }
     }
+    
+    // picker data source
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        8
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        letterBank.count
+    }
+    
+    // picker delegate
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return letterBank[row]
+    }
+    
+    
+    @IBAction func checkForWin(_ sender: Any) {
+        if(timerIsRunning) {
+            var pickerWord = ""
+            
+            for index in 0...cipherPicker.numberOfComponents-1 {
+                pickerWord.append(letterBank[cipherPicker.selectedRow(inComponent: index)])
+            }
+            
+            if(pickerWord == correctKey) {
+                let msg = "You got the correct key!"
+                let alertController = UIAlertController(title: "Correct!", message: msg, preferredStyle: .alert)
+                let alertCancel = UIAlertAction(title: "Ok", style: .cancel)
+                alertController.addAction(alertCancel)
+                self.present(alertController, animated: true)
+                self.timer.invalidate()
+            }
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,24 +97,23 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     func runTimer() {
         DispatchQueue.global(qos: .userInitiated).async {
-            print("Running")
             self.timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: true)
             RunLoop.current.add(self.timer, forMode: .common)
             RunLoop.current.run()
         }
     }
     
-    func stopTimer() {
-        timer.invalidate()
-    }
-    
     @objc func updateTimer() {
         DispatchQueue.main.async {
-            print("Main")
             if(self.timeInMilliSeconds >= 1) {
                 self.timeInMilliSeconds -= 1
             }else {
-                self.stopTimer()
+                self.timer.invalidate()
+                let failMsg = "You failed to solve the code!"
+                let alertController = UIAlertController(title: "Fail", message: failMsg, preferredStyle: .alert)
+                let alertCancel = UIAlertAction(title: "Ok", style: .cancel)
+                alertController.addAction(alertCancel)
+                self.present(alertController, animated: true)
             }
             
             if(self.timeInMilliSeconds <= 10000) {
