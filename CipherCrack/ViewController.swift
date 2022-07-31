@@ -19,11 +19,12 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     var timer = Timer()
     
-    static let MAX_TIME_IN_MILLISECONDS = 30000
+    static let MAX_TIME_IN_MILLISECONDS = 60000
     
     var timeInMilliSeconds = MAX_TIME_IN_MILLISECONDS
     
     var timerIsRunning = false
+    var checkingAnswer = false
     
     @IBOutlet weak var timerDisplay: UILabel!
     
@@ -68,9 +69,30 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         return letterBank[row]
     }
     
+    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        
+        if(checkingAnswer) {
+            if(row == cipherPicker.selectedRow(inComponent: component)){
+                if(component == 0) {
+                    checkingAnswer = false
+                }
+                
+                // if letter we have in the picker doesn't equal the correct letter in our key then turn that letter red
+                if(letterBank[cipherPicker.selectedRow(inComponent: component)] != String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
+                    return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.red])
+                }
+                // if it is correct turn green
+                return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.green])
+            }
+        }
+        
+        return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.black])
+    }
+    
     
     @IBAction func checkForWin(_ sender: Any) {
         if(timerIsRunning) {
+            checkingAnswer = true
             var pickerWord = ""
             
             for index in 0...cipherPicker.numberOfComponents-1 {
@@ -84,6 +106,8 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 alertController.addAction(alertCancel)
                 self.present(alertController, animated: true)
                 self.timer.invalidate()
+            }else {
+                cipherPicker.reloadAllComponents()
             }
         }
     }
