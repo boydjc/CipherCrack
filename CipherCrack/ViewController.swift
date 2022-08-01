@@ -30,17 +30,23 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBOutlet weak var cipherPicker: UIPickerView!
     
+    @IBOutlet weak var backPauseButton: UIButton!
+    
     @IBAction func timerStart(_ sender: Any) {
-        if(!timerIsRunning) {
+        if(!timerIsRunning && backPauseButton.titleLabel!.text == "Back") {
             runTimer()
             timerIsRunning = true
+            backPauseButton.setTitle("Pause", for: .normal)
         }
     }
     
     @IBAction func timerStop(_ sender: Any) {
-        if(timerIsRunning) {
+        if(timerIsRunning && backPauseButton.titleLabel!.text == "Pause") {
             timer.invalidate()
             timerIsRunning = false
+            backPauseButton.setTitle("Back", for: .normal)
+        }else if(!timerIsRunning && backPauseButton.titleLabel!.text == "Back") {
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
