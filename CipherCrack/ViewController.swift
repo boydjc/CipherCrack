@@ -32,33 +32,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     @IBOutlet weak var backPauseButton: UIButton!
     
-    @IBAction func timerStart(_ sender: Any) {
-        if(!timerIsRunning && backPauseButton.titleLabel!.text == "Back") {
-            runTimer()
-            timerIsRunning = true
-            backPauseButton.setTitle("Pause", for: .normal)
-        }
-    }
     
     @IBAction func timerStop(_ sender: Any) {
-        if(timerIsRunning && backPauseButton.titleLabel!.text == "Pause") {
-            timer.invalidate()
-            timerIsRunning = false
-            backPauseButton.setTitle("Back", for: .normal)
-        }else if(!timerIsRunning && backPauseButton.titleLabel!.text == "Back") {
-            self.navigationController?.popViewController(animated: true)
-        }
-    }
-    
-    @IBAction func timerReset(_ sender: Any) {
-        if(timerIsRunning) {
-            timer.invalidate()
-        }
-        timeInMilliSeconds = ViewController.MAX_TIME_IN_MILLISECONDS
-        timerDisplay.text = formatTimeString(time: TimeInterval(timeInMilliSeconds))
-        if(self.timerDisplay.textColor == UIColor.red) {
-            self.timerDisplay.textColor = UIColor.black
-        }
+        timer.invalidate()
+        timerIsRunning = false
+        self.navigationController?.popViewController(animated: true)
     }
     
     // picker data source
@@ -130,8 +108,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         
         for count in 0...cipherPicker.numberOfComponents-1 {
             let randRow = Int.random(in: 0...letterBank.count-1)
-            cipherPicker.selectRow(randRow, inComponent: count, animated: true);
+            cipherPicker.selectRow(randRow, inComponent: count, animated: true)
         }
+        
+        runTimer()
+        timerIsRunning = true
     }
     
     func runTimer() {
