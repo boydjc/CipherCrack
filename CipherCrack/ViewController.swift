@@ -72,7 +72,10 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     // picker delegate
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return letterBank[row]
+        
+        let randRow = Int.random(in: 0...letterBank.count-1)
+        
+        return letterBank[randRow]
     }
     
     func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
@@ -91,8 +94,9 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                 return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.green])
             }
         }
+
+        return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
         
-        return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.black])
     }
     
     
@@ -123,6 +127,11 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         timerDisplay.text = formatTimeString(time: TimeInterval(timeInMilliSeconds))
+        
+        for count in 0...cipherPicker.numberOfComponents-1 {
+            let randRow = Int.random(in: 0...letterBank.count-1)
+            cipherPicker.selectRow(randRow, inComponent: count, animated: true);
+        }
     }
     
     func runTimer() {

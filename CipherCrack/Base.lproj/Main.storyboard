@@ -87,7 +87,7 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.0" green="0.22422844137655051" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="fSp-ke-11H"/>
                     <connections>
@@ -100,10 +100,10 @@
             </objects>
             <point key="canvasLocation" x="1327.536231884058" y="28.794642857142854"/>
         </scene>
-        <!--View Controller-->
+        <!--Title View Controller-->
         <scene sceneID="jB8-1L-TGT">
             <objects>
-                <viewController id="a4i-uY-Yze" sceneMemberID="viewController">
+                <viewController id="a4i-uY-Yze" customClass="TitleViewController" customModule="CipherCrack" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qgY-hS-oJi">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
