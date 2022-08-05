@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  JumbleViewController.swift
 //  CipherCrack
 //
 //  Created by Joshua Boyd on 7/28/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class JumbleViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     let numberBank = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     
@@ -36,7 +36,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     @IBAction func timerStop(_ sender: Any) {
         timer.invalidate()
         timerIsRunning = false
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
     }
     
     // picker data source
@@ -129,7 +129,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     func runTimer() {
         DispatchQueue.global(qos: .userInitiated).async {
-            self.timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: (#selector(JumbleViewController.updateTimer)), userInfo: nil, repeats: true)
             RunLoop.current.add(self.timer, forMode: .common)
             RunLoop.current.run()
         }
