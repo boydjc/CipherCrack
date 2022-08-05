@@ -44,19 +44,28 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
         8
     }
     
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 40.0
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return 40.0
+    }
+    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         letterBank.count
     }
     
-    // picker delegate
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
-        let randRow = Int.random(in: 0...letterBank.count-1)
+        var pickerLabel: UILabel? = (view as? UILabel)
+        if pickerLabel == nil {
+            pickerLabel = UILabel()
+            pickerLabel?.font = UIFont(name: "Times New Roman", size: 35.0)
+            pickerLabel?.textAlignment = .center
+        }
         
-        return letterBank[randRow]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        pickerLabel?.text = letterBank[row]
         
         if(checkingAnswer) {
             if(row == cipherPicker.selectedRow(inComponent: component)){
@@ -64,17 +73,20 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
                     checkingAnswer = false
                 }
                 
-                // if letter we have in the picker doesn't equal the correct letter in our key then turn that letter red
-                if(letterBank[cipherPicker.selectedRow(inComponent: component)] != String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
-                    return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.red])
+                if(letterBank[cipherPicker.selectedRow(inComponent: component)] ==
+                   String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
+                    pickerLabel?.textColor = UIColor.green
+                    return pickerLabel!
+                } else {
+                    pickerLabel?.textColor = UIColor.red
+                    return pickerLabel!
                 }
-                // if it is correct turn green
-                return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.green])
             }
         }
-
-        return NSAttributedString(string: letterBank[row], attributes: [NSAttributedString.Key.foregroundColor:UIColor.white])
         
+        pickerLabel?.textColor = UIColor.white
+        
+        return pickerLabel!
     }
     
     
