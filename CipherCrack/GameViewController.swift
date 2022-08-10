@@ -15,6 +15,10 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                           "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
                           "u", "v", "w", "x", "y", "z"]
     
+    // an array of integers corresponding to the row number of each
+    // correctly checked cipher letter
+    var correctComponents: [Int] = []
+    
     var correctKey = ""
     
     var timer = Timer()
@@ -104,6 +108,9 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                     if(letterBank[cipherPicker.selectedRow(inComponent: component)] ==
                         String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
                         pickerLabel?.textColor = UIColor.green
+                        if !(correctComponents.contains(component)) {
+                            correctComponents.append(component)
+                        }
                         return pickerLabel!
                     } else {
                         pickerLabel?.textColor = UIColor.red
@@ -113,6 +120,9 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                     if(String(numberBank[cipherPicker.selectedRow(inComponent: component)]) ==
                         String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
                         pickerLabel?.textColor = UIColor.green
+                        if !(correctComponents.contains(component)) {
+                            correctComponents.append(component)
+                        }
                         return pickerLabel!
                     } else {
                         pickerLabel?.textColor = UIColor.red
@@ -141,8 +151,8 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 }
             }
             
-            print("Picker Word: \(pickerWord)")
-            print("Correct Word: \(correctKey)")
+            //print("Picker Word: \(pickerWord)")
+            //print("Correct Word: \(correctKey)")
             
             if(pickerWord == correctKey) {
                 let msg = "You got the correct key!"
@@ -166,7 +176,12 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             } else {
                 randRow = Int.random(in: 0...numberBank.count-1)
             }
-            cipherPicker.selectRow(randRow, inComponent: count, animated: true)
+            
+            // if the current row has the correct letter, and has been checked
+            // then we will not move that row
+            if !(correctComponents.contains(count)) {
+                cipherPicker.selectRow(randRow, inComponent: count, animated: true)
+            }
         }
     }
     

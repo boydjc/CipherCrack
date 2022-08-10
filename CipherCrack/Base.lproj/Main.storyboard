@@ -38,7 +38,7 @@
                                 </connections>
                             </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZZ-YO-msd">
-                                <rect key="frame" x="20" y="731" width="153" height="48"/>
+                                <rect key="frame" x="231" y="748" width="153" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Check" cornerStyle="capsule">
@@ -64,7 +64,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ff-Lv-g8W">
-                                <rect key="frame" x="241" y="731" width="153" height="48"/>
+                                <rect key="frame" x="30" y="748" width="153" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Shuffle" cornerStyle="capsule">
@@ -76,7 +76,6 @@
                                     <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <action selector="checkForWin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7u9-PC-f2t"/>
                                     <action selector="shufflePicker:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YNG-K5-DJC"/>
                                 </connections>
                             </button>
