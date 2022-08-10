@@ -7,10 +7,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Jumble View Controller-->
+        <!--Game View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="JumbleViewController" customModule="CipherCrack" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="GameViewController" customModule="CipherCrack" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -108,7 +108,7 @@
                                 </buttonConfiguration>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cipherCrackLogo" translatesAutoresizingMaskIntoConstraints="NO" id="6K6-V0-FCy">
-                                <rect key="frame" x="20" y="148" width="374" height="180"/>
+                                <rect key="frame" x="0.0" y="151" width="414" height="177"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uKJ-o1-xkK">
@@ -128,7 +128,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oeb-nc-e4q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-162" y="29"/>
+            <point key="canvasLocation" x="-162.31884057971016" y="28.794642857142854"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="eLS-rb-TpW">
@@ -139,7 +139,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="cipherCrackLogo" translatesAutoresizingMaskIntoConstraints="NO" id="TNa-Bq-y3n">
-                                <rect key="frame" x="20" y="153" width="374" height="180"/>
+                                <rect key="frame" x="0.0" y="156" width="414" height="177"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fa5-hN-iqE">
@@ -151,7 +151,7 @@
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="Ome-XX-KYE"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="p6U-l8-F0t"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B5H-ns-x15">
@@ -162,6 +162,9 @@
                                     <fontDescription key="titleFontDescription" type="system" pointSize="28"/>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="wdB-3t-jlP"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rjX-22-xCn">
                                 <rect key="frame" x="90" y="551" width="234" height="58"/>
@@ -171,6 +174,9 @@
                                     <fontDescription key="titleFontDescription" type="system" pointSize="28"/>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" animates="NO" id="NyX-FV-nsj"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPT-Yk-aDc">
                                 <rect key="frame" x="90" y="696" width="234" height="45"/>
@@ -190,10 +196,15 @@
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" id="SWu-xs-kVA"/>
+                    <connections>
+                        <outlet property="jumbleModeButton" destination="fa5-hN-iqE" id="H1F-QU-trr"/>
+                        <outlet property="numberModeButton" destination="rjX-22-xCn" id="bLP-n3-tIH"/>
+                        <outlet property="wordModeButton" destination="B5H-ns-x15" id="xaY-LI-2qu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gma-O6-u3r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="943" y="-838"/>
+            <point key="canvasLocation" x="942.02898550724649" y="-838.39285714285711"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Fak-CM-WRD">
@@ -213,7 +224,10 @@
             <point key="canvasLocation" x="-1206" y="29"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="NyX-FV-nsj"/>
+    </inferredMetricsTieBreakers>
     <resources>
-        <image name="cipherCrackLogo" width="1303" height="303"/>
+        <image name="cipherCrackLogo" width="1428" height="384"/>
     </resources>
 </document>

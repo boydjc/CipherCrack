@@ -11,6 +11,11 @@ class MenuViewController: UIViewController {
 
     
     
+    
+    @IBOutlet weak var jumbleModeButton: UIButton!
+    @IBOutlet weak var wordModeButton: UIButton!
+    @IBOutlet weak var numberModeButton: UIButton!
+    
     @IBAction func MenuBackButton(_ sender: Any) {
         self.navigationController?.popViewController(animated: false)
     }
@@ -20,6 +25,11 @@ class MenuViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         setBackgroundImage()
+        
+        jumbleModeButton.tag = 1
+        wordModeButton.tag = 2
+        numberModeButton.tag = 3
+        
     }
     
     func setBackgroundImage() {
@@ -35,6 +45,10 @@ class MenuViewController: UIViewController {
         self.view.sendSubviewToBack(bgImageView)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationView = segue.destination as! GameViewController
+        destinationView.sourceButtonTag = (sender as! UIButton).tag
+    }
 
     /*
     // MARK: - Navigation
