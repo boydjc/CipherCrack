@@ -15,12 +15,11 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                           "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
                           "u", "v", "w", "x", "y", "z"]
     
-    let correctLetterTestKey = "abcdefgh"
-    let correctNumberTestKey = "12345678"
+    var correctKey = ""
     
     var timer = Timer()
     
-    static let MAX_TIME_IN_MILLISECONDS = 60000
+    static let MAX_TIME_IN_MILLISECONDS = 1200000
     
     var timeInMilliSeconds = MAX_TIME_IN_MILLISECONDS
     
@@ -36,6 +35,8 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     // the button that got us here, which corresponds to which game mode we are in
     var sourceButtonTag = 0
     
+    var numberOfPickerComponents = 8
+    
     
     @IBAction func timerStop(_ sender: Any) {
         timer.invalidate()
@@ -43,9 +44,23 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         self.navigationController?.popViewController(animated: false)
     }
     
+    func createNewCorrectKey() {
+        correctKey = ""
+        
+        for _ in 0...numberOfPickerComponents-1 {
+            if(sourceButtonTag == 1) {
+                let randomNumber = Int.random(in: 0...letterBank.count-1)
+                correctKey.append(String(letterBank[randomNumber]))
+            } else {
+                let randomNumber = Int.random(in: 0...numberBank.count-1)
+                correctKey.append(String(numberBank[randomNumber]))
+            }
+        }
+    }
+    
     // picker data source
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        8
+        numberOfPickerComponents
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
@@ -84,11 +99,10 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 if(component == 0) {
                     checkingAnswer = false
                 }
+                
                 if(sourceButtonTag == 1) {
-                    // this is just needless redundancy until the correct key
-                    // randomizer is created. CHANGE THIS ONCE IT IS!!
                     if(letterBank[cipherPicker.selectedRow(inComponent: component)] ==
-                       String(correctLetterTestKey[correctLetterTestKey.index(correctLetterTestKey.startIndex, offsetBy: component)])) {
+                        String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
                         pickerLabel?.textColor = UIColor.green
                         return pickerLabel!
                     } else {
@@ -97,7 +111,7 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                     }
                 } else {
                     if(String(numberBank[cipherPicker.selectedRow(inComponent: component)]) ==
-                       String(correctNumberTestKey[correctNumberTestKey.index(correctNumberTestKey.startIndex, offsetBy: component)])) {
+                        String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
                         pickerLabel?.textColor = UIColor.green
                         return pickerLabel!
                     } else {
@@ -127,7 +141,10 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 }
             }
             
-            if(pickerWord == correctLetterTestKey || pickerWord == correctNumberTestKey) {
+            print("Picker Word: \(pickerWord)")
+            print("Correct Word: \(correctKey)")
+            
+            if(pickerWord == correctKey) {
                 let msg = "You got the correct key!"
                 let alertController = UIAlertController(title: "Correct!", message: msg, preferredStyle: .alert)
                 let alertCancel = UIAlertAction(title: "Ok", style: .cancel)
@@ -141,17 +158,34 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        timerDisplay.text = formatTimeString(time: TimeInterval(timeInMilliSeconds))
-        
+    @IBAction func shufflePicker(_ sender: Any) {
         for count in 0...cipherPicker.numberOfComponents-1 {
             var randRow = 0
             if(sourceButtonTag == 1) {
                 randRow = Int.random(in: 0...letterBank.count-1)
             } else {
+                randRow = Int.random(in: 0...numberBank.count-1)
+            }
+            cipherPicker.selectRow(randRow, inComponent: count, animated: true)
+        }
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        timerDisplay.text = formatTimeString(time: TimeInterval(timeInMilliSeconds))
+        
+        // create a new key
+        createNewCorrectKey()
+        
+        // randomize the picker
+        for count in 0...cipherPicker.numberOfComponents-1 {
+            var randRow = 0
+            if(sourceButtonTag == 1) {
                 randRow = Int.random(in: 0...letterBank.count-1)
+            } else {
+                randRow = Int.random(in: 0...numberBank.count-1)
             }
             cipherPicker.selectRow(randRow, inComponent: count, animated: true)
         }
@@ -159,7 +193,6 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         runTimer()
         timerIsRunning = true
         
-        print("Game Mode: \(sourceButtonTag)")
     }
     
     func runTimer() {
