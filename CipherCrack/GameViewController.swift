@@ -1,5 +1,5 @@
 //
-//  JumbleViewController.swift
+//  GameViewController.swift
 //  CipherCrack
 //
 //  Created by Joshua Boyd on 7/28/22.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class JumbleViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     let numberBank = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     
@@ -15,7 +15,8 @@ class JumbleViewController: UIViewController, UIPickerViewDelegate, UIPickerView
                           "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
                           "u", "v", "w", "x", "y", "z"]
     
-    let correctKey = "abcdefgh"
+    let correctLetterTestKey = "abcdefgh"
+    let correctNumberTestKey = "12345678"
     
     var timer = Timer()
     
@@ -31,6 +32,9 @@ class JumbleViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     @IBOutlet weak var cipherPicker: UIPickerView!
     
     @IBOutlet weak var backPauseButton: UIButton!
+    
+    // the button that got us here, which corresponds to which game mode we are in
+    var sourceButtonTag = 0
     
     
     @IBAction func timerStop(_ sender: Any) {
@@ -53,7 +57,11 @@ class JumbleViewController: UIViewController, UIPickerViewDelegate, UIPickerView
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        letterBank.count
+        if(sourceButtonTag == 1) {
+            return letterBank.count
+        } else {
+            return numberBank.count
+        }
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
@@ -65,21 +73,37 @@ class JumbleViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             pickerLabel?.textAlignment = .center
         }
         
-        pickerLabel?.text = letterBank[row]
+        if(sourceButtonTag == 1) {
+            pickerLabel?.text = letterBank[row]
+        } else {
+            pickerLabel?.text = String(numberBank[row])
+        }
         
         if(checkingAnswer) {
             if(row == cipherPicker.selectedRow(inComponent: component)){
                 if(component == 0) {
                     checkingAnswer = false
                 }
-                
-                if(letterBank[cipherPicker.selectedRow(inComponent: component)] ==
-                   String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
-                    pickerLabel?.textColor = UIColor.green
-                    return pickerLabel!
+                if(sourceButtonTag == 1) {
+                    // this is just needless redundancy until the correct key
+                    // randomizer is created. CHANGE THIS ONCE IT IS!!
+                    if(letterBank[cipherPicker.selectedRow(inComponent: component)] ==
+                       String(correctLetterTestKey[correctLetterTestKey.index(correctLetterTestKey.startIndex, offsetBy: component)])) {
+                        pickerLabel?.textColor = UIColor.green
+                        return pickerLabel!
+                    } else {
+                        pickerLabel?.textColor = UIColor.red
+                        return pickerLabel!
+                    }
                 } else {
-                    pickerLabel?.textColor = UIColor.red
-                    return pickerLabel!
+                    if(String(numberBank[cipherPicker.selectedRow(inComponent: component)]) ==
+                       String(correctNumberTestKey[correctNumberTestKey.index(correctNumberTestKey.startIndex, offsetBy: component)])) {
+                        pickerLabel?.textColor = UIColor.green
+                        return pickerLabel!
+                    } else {
+                        pickerLabel?.textColor = UIColor.red
+                        return pickerLabel!
+                    }
                 }
             }
         }
@@ -96,10 +120,14 @@ class JumbleViewController: UIViewController, UIPickerViewDelegate, UIPickerView
             var pickerWord = ""
             
             for index in 0...cipherPicker.numberOfComponents-1 {
-                pickerWord.append(letterBank[cipherPicker.selectedRow(inComponent: index)])
+                if(sourceButtonTag == 1) {
+                    pickerWord.append(letterBank[cipherPicker.selectedRow(inComponent: index)])
+                } else {
+                    pickerWord.append(String(numberBank[cipherPicker.selectedRow(inComponent: index)]))
+                }
             }
             
-            if(pickerWord == correctKey) {
+            if(pickerWord == correctLetterTestKey || pickerWord == correctNumberTestKey) {
                 let msg = "You got the correct key!"
                 let alertController = UIAlertController(title: "Correct!", message: msg, preferredStyle: .alert)
                 let alertCancel = UIAlertAction(title: "Ok", style: .cancel)
@@ -119,17 +147,24 @@ class JumbleViewController: UIViewController, UIPickerViewDelegate, UIPickerView
         timerDisplay.text = formatTimeString(time: TimeInterval(timeInMilliSeconds))
         
         for count in 0...cipherPicker.numberOfComponents-1 {
-            let randRow = Int.random(in: 0...letterBank.count-1)
+            var randRow = 0
+            if(sourceButtonTag == 1) {
+                randRow = Int.random(in: 0...letterBank.count-1)
+            } else {
+                randRow = Int.random(in: 0...letterBank.count-1)
+            }
             cipherPicker.selectRow(randRow, inComponent: count, animated: true)
         }
         
         runTimer()
         timerIsRunning = true
+        
+        print("Game Mode: \(sourceButtonTag)")
     }
     
     func runTimer() {
         DispatchQueue.global(qos: .userInitiated).async {
-            self.timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: (#selector(JumbleViewController.updateTimer)), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: (#selector(GameViewController.updateTimer)), userInfo: nil, repeats: true)
             RunLoop.current.add(self.timer, forMode: .common)
             RunLoop.current.run()
         }
