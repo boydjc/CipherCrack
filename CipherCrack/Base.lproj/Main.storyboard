@@ -38,11 +38,11 @@
                                 </connections>
                             </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZZ-YO-msd">
-                                <rect key="frame" x="137" y="683" width="140" height="138"/>
+                                <rect key="frame" x="20" y="731" width="153" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Check">
-                                    <backgroundConfiguration key="background" cornerRadius="107" strokeWidth="4" strokeOutset="6">
+                                <buttonConfiguration key="configuration" style="plain" title="Check" cornerStyle="capsule">
+                                    <backgroundConfiguration key="background" strokeWidth="4" strokeOutset="0.0">
                                         <color key="backgroundColor" red="0.37254902719999999" green="0.6549019814" blue="0.94509804249999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <color key="strokeColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </backgroundConfiguration>
@@ -63,6 +63,23 @@
                                     <action selector="timerStop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CYC-5A-aVe"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ff-Lv-g8W">
+                                <rect key="frame" x="241" y="731" width="153" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Shuffle" cornerStyle="capsule">
+                                    <backgroundConfiguration key="background" strokeWidth="4" strokeOutset="0.0">
+                                        <color key="backgroundColor" red="0.37254902719999999" green="0.6549019814" blue="0.94509804249999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="strokeColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </backgroundConfiguration>
+                                    <fontDescription key="titleFontDescription" type="system" pointSize="28"/>
+                                    <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="checkForWin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="7u9-PC-f2t"/>
+                                    <action selector="shufflePicker:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YNG-K5-DJC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.0" green="0.22422844137655051" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -76,7 +93,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1951" y="-1571"/>
+            <point key="canvasLocation" x="1950.7246376811595" y="-1571.6517857142856"/>
         </scene>
         <!--Title View Controller-->
         <scene sceneID="jB8-1L-TGT">
