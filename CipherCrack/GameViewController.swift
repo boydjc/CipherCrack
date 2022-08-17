@@ -48,7 +48,7 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         self.navigationController?.popViewController(animated: false)
     }
     
-    func createNewCorrectKey() {
+    func createRandomCorrectKey() {
         correctKey = ""
         
         for _ in 0...numberOfPickerComponents-1 {
@@ -60,6 +60,27 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                 correctKey.append(String(numberBank[randomNumber]))
             }
         }
+    }
+    
+    func getRandomWordForKey() {
+        
+        var chosenWord = ""
+        
+        if let wordsFilePath = Bundle.main.path(forResource: "wordDict", ofType: nil) {
+            do {
+                while(chosenWord == "" || chosenWord.count != numberOfPickerComponents) {
+                    let wordsString = try String(contentsOfFile: wordsFilePath)
+
+                    let wordLines = wordsString.components(separatedBy: .newlines)
+
+                    chosenWord = wordLines[numericCast(arc4random_uniform(numericCast(wordLines.count)))]
+                }
+            } catch {
+                self.navigationController?.popViewController(animated: false)
+            }
+        }
+        
+        correctKey = chosenWord
     }
     
     // picker data source
@@ -76,7 +97,7 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if(sourceButtonTag == 1) {
+        if(sourceButtonTag == 1 || sourceButtonTag == 2) {
             return letterBank.count
         } else {
             return numberBank.count
@@ -92,7 +113,7 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             pickerLabel?.textAlignment = .center
         }
         
-        if(sourceButtonTag == 1) {
+        if(sourceButtonTag == 1 || sourceButtonTag == 2) {
             pickerLabel?.text = letterBank[row]
         } else {
             pickerLabel?.text = String(numberBank[row])
@@ -104,7 +125,7 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
                     checkingAnswer = false
                 }
                 
-                if(sourceButtonTag == 1) {
+                if(sourceButtonTag == 1 || sourceButtonTag == 2) {
                     if(letterBank[cipherPicker.selectedRow(inComponent: component)] ==
                         String(correctKey[correctKey.index(correctKey.startIndex, offsetBy: component)])) {
                         pickerLabel?.textColor = UIColor.green
@@ -144,7 +165,7 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
             var pickerWord = ""
             
             for index in 0...cipherPicker.numberOfComponents-1 {
-                if(sourceButtonTag == 1) {
+                if(sourceButtonTag == 1 || sourceButtonTag == 2) {
                     pickerWord.append(letterBank[cipherPicker.selectedRow(inComponent: index)])
                 } else {
                     pickerWord.append(String(numberBank[cipherPicker.selectedRow(inComponent: index)]))
@@ -171,7 +192,7 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
     @IBAction func shufflePicker(_ sender: Any) {
         for count in 0...cipherPicker.numberOfComponents-1 {
             var randRow = 0
-            if(sourceButtonTag == 1) {
+            if(sourceButtonTag == 1 || sourceButtonTag == 2) {
                 randRow = Int.random(in: 0...letterBank.count-1)
             } else {
                 randRow = Int.random(in: 0...numberBank.count-1)
@@ -191,13 +212,17 @@ class GameViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDa
         // Do any additional setup after loading the view.
         timerDisplay.text = formatTimeString(time: TimeInterval(timeInMilliSeconds))
         
-        // create a new key
-        createNewCorrectKey()
+        
+        if(sourceButtonTag == 1 || sourceButtonTag == 3) {
+            createRandomCorrectKey()
+        } else {
+            getRandomWordForKey()
+        }
         
         // randomize the picker
         for count in 0...cipherPicker.numberOfComponents-1 {
             var randRow = 0
-            if(sourceButtonTag == 1) {
+            if(sourceButtonTag == 1 || sourceButtonTag == 2) {
                 randRow = Int.random(in: 0...letterBank.count-1)
             } else {
                 randRow = Int.random(in: 0...numberBank.count-1)
